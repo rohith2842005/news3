@@ -5,12 +5,15 @@ const Cyber = () => {
   const [mynews, setMyNews] = useState([]);
 
   const fetchData = async () => {
-    let resonse = await fetch(
-       "https://newsapi.org/v2/everything?q=cybersecurity&apiKey=a8b30640f0af4237b5cd77cc233aa4f2"
-
-    );
-    let data = await resonse.json();
-    setMyNews(data.articles);
+    try {
+      const response = await fetch(
+        "https://api.thenewsapi.com/v1/news/all?api_token=CPKBJBREuiGTMfkfAe2YMWStCdOGsRJ5uiEABLte&categories=tech&language=en"
+      );
+      const data = await response.json();
+      setMyNews(data.data || []);
+    } catch (err) {
+      setMyNews([]);
+    }
   };
 
   useEffect(() => {
@@ -20,47 +23,50 @@ const Cyber = () => {
   return (
     <>
       <div className="mainDiv">
-        {mynews.map((ele) => {
-          console.log(ele);
-          return (
-            <>
-              <div
-                class="card"
-                style={{
-                  width: "350px",
-                  height: "450px",
-                  marginLeft: "4rem",
-                  marginTop: "2rem",
-                }}
+        {mynews.map((ele, idx) => (
+          <div
+            className="card"
+            key={ele.uuid || idx}
+            style={{
+              width: "350px",
+              height: "450px",
+              marginLeft: "4rem",
+              marginTop: "2rem",
+            }}
+          >
+            <img
+              src={
+                ele.image_url
+                  ? ele.image_url
+                  : `https://source.unsplash.com/400x200/?technology,cybersecurity&sig=${idx}`
+              }
+              className="card-img-top"
+              alt="Article Visual"
+              style={{ maxHeight: "200px", objectFit: "cover" }}
+            />
+            <div className="card-body">
+              <h5 className="card-title">{ele.title}</h5>
+              <p className="card-time">
+                {ele.published_at
+                  ? new Date(ele.published_at).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })
+                  : ""}
+              </p>
+              <p className="card-text">{ele.source || ele.source_domain || ""}</p>
+              <a
+                href={ele.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary"
               >
-                <img
-                  src={
-                    ele.urlToImage == null
-                      ? "https://i.insider.com/6492daec65b9ce0018a443c8?width=1200&format=jpeg"
-                      : ele.urlToImage
-                  }
-                  class="card-img-top"
-                  alt="..."
-                />
-                <div class="card-body">
-                  <h5 class="card-title">{ele.title}</h5>
-                  <p class="card-time">
-  {new Date(ele.publishedAt).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  })}
-</p>
-
-                  <p class="card-text">{ele.author}</p>
-                  <a href={ele.url} target="_blank" class="btn btn-primary">
-                    Read More
-                  </a>
-                </div>
-              </div>
-            </>
-          );
-        })}
+                Read More
+              </a>
+            </div>
+          </div>
+        ))}
       </div>
     </>
   );
