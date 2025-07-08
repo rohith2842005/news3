@@ -17,7 +17,7 @@ export const Card = () => {
 
   const fetchArticles = async () => {
     try {
-      const res = await Axios.get("http://localhost:4000/news");
+      const res = await Axios.get("https://news-aggregator-mern.onrender.com/news");
       setPosts(res.data);
     } catch (err) {
       console.error("Error fetching articles:", err);

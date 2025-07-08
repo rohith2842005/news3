@@ -5,7 +5,7 @@ export function UserPost() {
   const [arr, setArr] = useState([]);
 
   useEffect(() => {
-    Axios.get("http://localhost:4000/news")
+    Axios.get("https://news-aggregator-mern.onrender.com/news")
       .then((res) => {
         if (res.status === 200) {
           console.log(res.data);

@@ -13,7 +13,7 @@ export const Account = () => {
   // Fetch current user data on mount
   useEffect(() => {
     axios
-      .get("http://localhost:4000/current-user")
+      .get("https://news-aggregator-mern.onrender.com/current-user")
       .then((res) => {
         const { fname, email, password } = res.data;
         setUserInfo({ fname, email, password });
@@ -34,7 +34,7 @@ export const Account = () => {
 
   const handleUpdate = () => {
     axios
-      .post("http://localhost:4000/update-user", userInfo)
+      .post("https://news-aggregator-mern.onrender.com/update-user", userInfo)
       .then(() => {
         alert("User info updated successfully!");
       })
